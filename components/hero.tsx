@@ -1,0 +1,35 @@
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
+
+export function Hero(){
+    return(
+        <section className="relative h-[600px] overflow-hidden">
+        <Image
+          src="/images/banner1.png"
+          alt="Twelsky Valhalla Hero"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 hero-gradient flex flex-col items-center justify-center text-center p-6">
+          <p className="max-w-[600px] text-lg md:text-xl text-white/90 mb-8">
+            Embark on an epic journey through mystical realms. Battle
+            legendary foes and claim your place among the gods.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button size="lg" className="fire-button animate-pulse-gold">
+              <Download className="mr-2 h-5 w-5" />
+              Download Now
+            </Button>
+            <Link href="/login">
+              <Button variant="outline" size="lg" className="fire-button">
+                Play Now
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    )
+}
