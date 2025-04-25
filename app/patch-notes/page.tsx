@@ -1,10 +1,15 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { Footer } from "@/components/footer"
 import { CalendarDays, FileText } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-
+import { useEffect, useState } from "react"
+import Loading from "./loading"
 export default function PatchNotesPage() {
+
+
   // const patchNotes = [
   //   {
   //     id: "v2.5.0",
@@ -53,6 +58,19 @@ export default function PatchNotesPage() {
   //   },
     
   // ]
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Trigger loading every time component mounts
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 3 seconds
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, []); // Empty dependency array means this runs once on every mount
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="flex min-h-screen flex-col">

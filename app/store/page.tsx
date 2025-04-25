@@ -1,8 +1,12 @@
+"use client"
+
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { Footer } from "@/components/footer"
 import { ShoppingCart, Percent } from "lucide-react"
+import { useEffect, useState } from "react"
+import Loading from "./loading"
 
 export default function StorePage() {
   const coinPackages = [
@@ -29,6 +33,19 @@ export default function StorePage() {
     if (bonus === 0) return null
     return Math.round((bonus / coins) * 100)
   }
+
+    const [isLoading, setIsLoading] = useState(true);
+  
+    useEffect(() => {
+      // Trigger loading every time component mounts
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000); // 3 seconds
+  
+      return () => clearTimeout(timer); // Cleanup on unmount
+    }, []); // Empty dependency array means this runs once on every mount
+  
+    if (isLoading) return <Loading />;
 
   return (
     <div className="flex min-h-screen flex-col">

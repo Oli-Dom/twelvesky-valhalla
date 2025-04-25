@@ -32,7 +32,6 @@ export default function RegisterPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [generalError, setGeneralError] = useState("")
-
   // Redirect if already logged in
   useEffect(() => {
     if (status === "authenticated") {

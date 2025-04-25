@@ -24,6 +24,12 @@ export default function Loading() {
           height="240"
         />
       </svg>
+
+      <style>
+      
+      </style>
     </div>
+
+  
   )
 }
