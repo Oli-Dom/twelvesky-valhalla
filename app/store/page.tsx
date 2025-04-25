@@ -85,7 +85,6 @@ export default function StorePage() {
 
                       {pack.bonus > 0 && (
                         <div className="mt-1 flex items-center justify-center text-sm text-green-500 font-medium">
-                          <Percent className="h-3 w-3 mr-1" />
                           <span>
                             +{pack.bonus.toLocaleString()} Bonus ({getBonusPercentage(pack.coins, pack.bonus)}%)
                           </span>
