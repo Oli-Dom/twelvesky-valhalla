@@ -8,9 +8,8 @@ import { SessionProvider } from "@/components/session-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Twelsky Valhalla - Epic MMO RPG",
+  title: "TwelveSky Valhalla - Epic MMO RPG",
   description: "Join the epic adventure in Twelsky Valhalla, the legendary MMO RPG",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
