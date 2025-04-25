@@ -2,7 +2,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { Footer } from "@/components/footer"
-import { ShoppingCart, CreditCard, Shield, Percent } from "lucide-react"
+import { ShoppingCart, Percent } from "lucide-react"
 
 export default function StorePage() {
   const coinPackages = [

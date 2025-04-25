@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300" style="display:block; margin:auto; background-color:transparent;">
+  <!-- Background Circle (optional, to frame the image) -->
+  <circle cx="150" cy="150" r="140" fill="none" stroke="white" stroke-width="5"/>
+
+  <!-- Image (centered in the SVG) -->
+  <image href="https://i.imgur.com/OUJwAtI.png" x="30" y="30" width="240" height="240" />
+  
+  <style>
+    /* Add an animation for the flip effect */
+    @keyframes flipLoop {
+      0%   { transform: rotateY(0deg); }
+      100% { transform: rotateY(360deg); }
+    }
+
+    /* Apply the animation to the image */
+    image {
+      transform-origin: center;
+      animation: flipLoop 3s infinite linear; /* Rotate infinitely */
+    }
+  </style>
+</svg>

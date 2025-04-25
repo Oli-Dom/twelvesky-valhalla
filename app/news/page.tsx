@@ -1,9 +1,14 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { MainNav } from "@/components/main-nav"
 import { Footer } from "@/components/footer"
+import { useEffect } from "react"
+import { useState } from "react"
 import { CalendarDays, ChevronRight } from "lucide-react"
+import Loading from "./loading"
 
 export default function NewsPage() {
   // const newsArticles = [
@@ -16,6 +21,19 @@ export default function NewsPage() {
   //     slug: "crimson-crusade",
   //   }
   // ]
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Trigger loading every time component mounts
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 3 seconds
+
+    return () => clearTimeout(timer); // Cleanup on unmount
+  }, []); // Empty dependency array means this runs once on every mount
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="flex min-h-screen flex-col">

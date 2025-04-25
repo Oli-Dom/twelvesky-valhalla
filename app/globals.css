@@ -89,6 +89,16 @@
       transform: translateY(-10px);
     }
   }
+
+  @keyframes flipLoop {
+    0% {
+      transform: rotateY(0deg);
+    }
+    100% {
+      transform: rotateY(360deg);
+    }
+  }
+
 }
 
 @utility container {
@@ -220,4 +230,9 @@
 
 .coin-card:hover {
   transform: scale(1.05);
+}
+
+.flip-animation image {
+  transform-origin: center;
+  animation: flipLoop 3s linear infinite;
 }

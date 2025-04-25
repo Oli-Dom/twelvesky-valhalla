@@ -1,8 +1,7 @@
 "use client"
 
-import type React from "react"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -16,6 +15,7 @@ import { useRouter } from "next/navigation"
 
 export default function RegisterPage() {
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -31,8 +31,17 @@ export default function RegisterPage() {
     confirmPassword: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [generalError, setGeneralError] = useState("")
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Redirect if already logged in
+  useEffect(() => {
+    if (status === "authenticated") {
+      console.log("User is authenticated, redirecting to profile page")
+      router.push("/profile")
+    }
+  }, [status, router])
+
+  const handleChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -40,11 +49,15 @@ export default function RegisterPage() {
     }))
 
     // Clear error when user starts typing
-    if (errors[name as keyof typeof errors]) {
+    if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
       }))
+    }
+
+    if (generalError) {
+      setGeneralError("")
     }
   }
 
@@ -73,6 +86,9 @@ export default function RegisterPage() {
     } else if (formData.username.length < 3) {
       newErrors.username = "Username must be at least 3 characters"
       valid = false
+    } else if (formData.username.length > 32) {
+      newErrors.username = "Username cannot exceed 32 characters"
+      valid = false
     }
 
     // Password validation
@@ -81,6 +97,9 @@ export default function RegisterPage() {
       valid = false
     } else if (formData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters"
+      valid = false
+    } else if (formData.password.length > 32) {
+      newErrors.password = "Password cannot exceed 32 characters"
       valid = false
     }
 
@@ -97,19 +116,58 @@ export default function RegisterPage() {
     return valid
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (validateForm()) {
       setIsSubmitting(true)
+      setGeneralError("")
 
-      // Simulate API call
-      setTimeout(() => {
-        setIsSubmitting(false)
+      try {
+        const response = await fetch("/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
+        })
+
+        const data = await response.json()
+
+        if (!response.ok) {
+          throw new Error(data.error || "Registration failed")
+        }
+
+        console.log("Registration successful, redirecting to login page")
         // Redirect to login page after successful registration
         router.push("/login?registered=true")
-      }, 1500)
+      } catch (error) {
+        console.error("Registration error:", error)
+        setGeneralError(error.message || "An error occurred during registration")
+        setIsSubmitting(false)
+      }
     }
+  }
+
+  // If already logged in, don't show the registration form
+  if (status === "authenticated") {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <MainNav />
+        <main className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold mb-4">You are already logged in</h1>
+            <p className="mb-4">Redirecting to your profile page...</p>
+            <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    )
   }
 
   return (
@@ -118,10 +176,17 @@ export default function RegisterPage() {
       <main className="flex-1 flex items-center justify-center py-12">
         <div className="container grid md:grid-cols-2 gap-6 px-4 md:px-6">
           <div className="relative hidden md:block">
-            <div className="absolute inset-0 bg-linear-to-r from-background to-transparent z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background to-transparent z-10" />
             <Image src="/images/banner5.png" alt="Register Background" fill className="object-cover" />
           </div>
           <div className="space-y-6">
+            {generalError && (
+              <div className="bg-destructive/10 text-destructive p-3 rounded-md flex items-start">
+                <AlertCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" />
+                <p>{generalError}</p>
+              </div>
+            )}
+
             <div className="space-y-2 text-center">
               <h1 className="text-3xl font-bold text-primary">Create Your Account</h1>
               <p className="text-muted-foreground">Join the epic adventure in Twelsky Valhalla</p>
@@ -165,6 +230,7 @@ export default function RegisterPage() {
                     className={`pl-10 ${errors.username ? "border-destructive" : ""}`}
                     value={formData.username}
                     onChange={handleChange}
+                    maxLength={32}
                   />
                 </div>
                 {errors.username && (
@@ -173,6 +239,7 @@ export default function RegisterPage() {
                     {errors.username}
                   </p>
                 )}
+                <p className="text-xs text-muted-foreground">Username must be between 3 and 32 characters</p>
               </div>
 
               <div className="space-y-2">
@@ -189,6 +256,7 @@ export default function RegisterPage() {
                     className={`pl-10 ${errors.password ? "border-destructive" : ""}`}
                     value={formData.password}
                     onChange={handleChange}
+                    maxLength={32}
                   />
                   <button
                     type="button"
@@ -208,6 +276,7 @@ export default function RegisterPage() {
                     {errors.password}
                   </p>
                 )}
+                <p className="text-xs text-muted-foreground">Password must be between 6 and 32 characters</p>
               </div>
 
               <div className="space-y-2">
@@ -224,6 +293,7 @@ export default function RegisterPage() {
                     className={`pl-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
                     value={formData.confirmPassword}
                     onChange={handleChange}
+                    maxLength={32}
                   />
                   <button
                     type="button"
@@ -246,7 +316,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
+                <Checkbox id="terms" required />
                 <Label htmlFor="terms" className="text-sm font-normal">
                   I agree to the{" "}
                   <Link href="#" className="text-primary hover:underline">
