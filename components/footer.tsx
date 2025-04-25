@@ -53,7 +53,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Twelsky Valhalla. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Twevelsky Valhalla. All rights reserved.</p>
         </div>
       </div>
     </footer>

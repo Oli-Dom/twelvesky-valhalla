@@ -16,7 +16,7 @@ export function MainNav() {
           <div className="relative h-10 w-10 md:h-12 md:w-12">
             <Image src="/images/game-logo.png" alt="Twelsky Valhalla" fill className="object-contain" />
           </div>
-          <span className="font-bold text-lg md:text-xl hidden sm:inline-block text-primary">Twelsky Valhalla</span>
+          <span className="font-bold text-lg md:text-xl hidden sm:inline-block text-primary">Twevelsky Valhalla</span>
         </Link>
 
         {/* Mobile menu button */}
