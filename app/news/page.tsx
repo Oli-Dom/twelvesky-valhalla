@@ -9,18 +9,10 @@ import { useEffect } from "react"
 import { useState } from "react"
 import { CalendarDays, ChevronRight } from "lucide-react"
 import Loading from "./loading"
+import { newsData } from "@/consts/newsData"
 
 export default function NewsPage() {
-  // const newsArticles = [
-  //   {
-  //     id: 1,
-  //     title: "The Crimson Crusade Update",
-  //     excerpt: "New dungeons, weapons, and the fearsome Crimson Lord await brave warriors.",
-  //     date: "April 15, 2025",
-  //     image: "/images/banner5.png",
-  //     slug: "crimson-crusade",
-  //   }
-  // ]
+   const newsArticles = newsData
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,17 +36,17 @@ export default function NewsPage() {
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl text-primary gold-glow">Latest News</h1>
               <p className="max-w-[700px] text-muted-foreground md:text-xl">
-                Stay updated with the latest announcements, updates, and events in Twelsky Valhalla.
+                Stay updated with the latest announcements, updates, and events in TwelveSky Valhalla.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* {newsArticles.map((article) => (
+              {newsArticles.map((article) => (
                 <Link key={article.id} href={`/news/${article.slug}`} className="group">
                   <div className="bg-card rounded-lg overflow-hidden shadow-lg news-card border border-primary/20 h-full flex flex-col">
                     <div className="relative h-48">
                       <Image
-                        src={article.image || "/placeholder.svg"}
+                        src={article.coverImage.logo || "/placeholder.svg"}
                         alt={article.title}
                         fill
                         className="object-cover transition-transform group-hover:scale-105"
@@ -76,8 +68,7 @@ export default function NewsPage() {
                     </div>
                   </div>
                 </Link>
-              ))} */}
-              <h1>No current news</h1>
+              ))}
             </div>
 
             <div className="mt-12 flex justify-center">

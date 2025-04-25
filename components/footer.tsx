@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <h3 className="text-lg font-bold text-primary">Twelsky Valhalla</h3>
+            <h3 className="text-lg font-bold text-primary">TwelveSky Valhalla</h3>
             <p className="text-sm text-muted-foreground">
               Enter the realm of gods and heroes in this epic MMO RPG adventure.
             </p>

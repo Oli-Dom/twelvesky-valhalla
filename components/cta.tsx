@@ -13,7 +13,7 @@ export function CTA(){
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-primary gold-glow">YOUR LEGEND AWAITS</h2>
             <p className="max-w-[800px] mx-auto text-lg mb-8 text-muted-foreground">
               Join millions of players in the most immersive MMO RPG experience. Create your hero, forge alliances, and
-              conquer the realm of Twelsky Valhalla.
+              conquer the realm of TwelveSky Valhalla.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Button size="lg" className="fire-button animate-pulse-gold">
@@ -24,6 +24,11 @@ export function CTA(){
                 <Button variant="outline" size="lg" className="fire-button">
                   <Zap className="mr-2 h-5 w-5" />
                   Play Free Now
+                </Button>
+              </Link>
+              <Link href="https://discord.gg/gDvc7vcKww">
+                <Button variant="outline" size="lg" className="fire-button">
+                  Join Our Discord
                 </Button>
               </Link>
             </div>
