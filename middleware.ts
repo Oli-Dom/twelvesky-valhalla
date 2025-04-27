@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   // Protect the profile page
   if (path === "/profile" && !token) {
     const url = new URL("/login", request.url)
-    url.searchParams.set("callbackUrl", path)
+    url.searchParams.set("callbackUrl", "/login")
     return NextResponse.redirect(url)
   }
 

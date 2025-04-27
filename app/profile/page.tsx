@@ -16,7 +16,7 @@ export default function ProfilePage() {
     required: true,
     onUnauthenticated() {
       console.log("User is not authenticated, redirecting to login page")
-      redirect("/login?callbackUrl=/profile")
+      redirect("/login?callbackUrl=/login")
     },
   })
 

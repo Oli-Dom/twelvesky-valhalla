@@ -8,7 +8,8 @@ export default async function NewsArticlePage({
 }: {
   params: { slug: string };
 }) {
-  const slug = params.slug;
+  const resolvedParams = await params; // Await the params object
+  const slug = resolvedParams.slug;
   const article = newsData.find((article) => article.slug === slug);
 
   if (!article) {
@@ -17,7 +18,7 @@ export default async function NewsArticlePage({
 
   return (
     <div>
-        <MainNav />
+      <MainNav />
       <div className="max-w-3xl mx-auto px-4 py-12">
         <h1 className="text-4xl font-extrabold tracking-tight leading-tight mb-4 text-primary">
           {article.title}
@@ -38,7 +39,7 @@ export default async function NewsArticlePage({
           />
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

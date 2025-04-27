@@ -9,7 +9,7 @@ export default function LoginFormWrapper() {
 
   const registered = searchParams.get("registered")
   const error = searchParams.get("error")
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile"
+  const callbackUrl = searchParams.get("callbackUrl") || "/login"
 
   return (
     <LoginPage

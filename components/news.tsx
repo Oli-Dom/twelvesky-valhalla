@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Newspaper } from "lucide-react";
 import { newsData } from "@/consts/newsData";
+import { ChevronRight } from "lucide-react";
 export function News() {
   return (
     <section className="py-16 bg-muted/50">
@@ -35,12 +36,19 @@ export function News() {
                   {article.date}
                 </div>
                 <h3 className="text-xl font-bold mb-2">{article.title}</h3>
-                <p className="text-muted-foreground mb-4 flex-1">
+                <p className="text-muted-foreground mb-4 line-clamp-3 overflow-hidden">
                   {article.excerpt}
                 </p>
-                <Link href={`/news/${article.slug}`}>
-                  <Button variant="link" className="p-0 h-auto text-primary">
+                <Link
+                  href={`/news/${article.slug}`}
+                  className="news-card-read-more-link"
+                >
+                  <Button
+                    variant="link"
+                    className="news-card-read-more-button p-0 h-auto text-primary group inline-flex items-center"
+                  >
                     Read More
+                    <ChevronRight className="ml-1 h-4 w-4" />
                   </Button>
                 </Link>
               </div>

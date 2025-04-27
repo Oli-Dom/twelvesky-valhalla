@@ -7,8 +7,20 @@ import { Footer } from "@/components/footer"
 import { ShoppingCart, Percent } from "lucide-react"
 import { useEffect, useState } from "react"
 import Loading from "./loading"
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 export default function StorePage() {
+
+    const { data: session, status } = useSession({
+      required: true,
+      onUnauthenticated() {
+        console.log("User is not authenticated, redirecting to login page")
+        redirect("/login?callbackUrl=/login")
+      },
+    })
+
+
   const coinPackages = [
     { dollars: 5, coins: 750, bonus: 0, popular: false },
     { dollars: 10, coins: 1500, bonus: 0, popular: false },
