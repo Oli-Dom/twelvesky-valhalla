@@ -51,7 +51,7 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
     }
   }, [registered, error])
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
@@ -64,7 +64,7 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
     setLoginError("")

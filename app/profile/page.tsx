@@ -217,7 +217,7 @@ export default function ProfilePage() {
 
                         <Button
                           className="w-full fire-button"
-                          onClick={() => handlePurchase(pack.id)}
+                          // onClick={() => handlePurchase(pack.id)}
                           disabled={isPurchasing}
                         >
                           {isPurchasing ? (
