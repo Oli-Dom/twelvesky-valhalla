@@ -70,17 +70,17 @@ export async function getUserHelixCoins(userId: string | number) {
 }
 
 // Update user's helix coins
-export async function updateUserHelixCoins(userId: string | number, amount: number) {
+export async function updateUserHelixCoins(uEmail: string | number, amount: number) {
   // Check if user has a record
-  const existing = (await query("SELECT id FROM memberinfo WHERE userId = ?", [userId])) as any[]
+  const existing = (await query("SELECT uID FROM memberinfo WHERE uEmail = ?", [uEmail])) as any[]
 
   if (existing.length > 0) {
-    await query("UPDATE memberinfo SET uCash = uCash + ? WHERE userId = ?", [amount, userId])
+    await query("UPDATE memberinfo SET uCash = uCash + ? WHERE uEmail = ?", [amount, uEmail])
   } else {
-    await query("INSERT INTO memberinfo (uID, uCash) VALUES (?, ?)", [userId, amount])
+    await query("INSERT INTO memberinfo (uEmail, uCash) VALUES (?, ?)", [uEmail, amount])
   }
 
   // Return updated amount
-  const updated = (await query("SELECT uCash FROM memberinfo WHERE userId = ?", [userId])) as any[]
+  const updated = (await query("SELECT uCash FROM memberinfo WHERE uEmail = ?", [uEmail])) as any[]
   return updated[0].helixCoins
 }

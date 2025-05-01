@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "TwelveSky Valhalla - Epic MMO RPG",
-  description: "Join the epic adventure in Twelsky Valhalla, the legendary MMO RPG",
+  description: "Join the epic adventure in Twelvesky Valhalla, the legendary MMO RPG",
 }
 
 export default function RootLayout({

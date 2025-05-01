@@ -176,66 +176,8 @@ export default function ProfilePage() {
                   </div>
                 </div>
 
-                <h3 className="text-xl font-bold mb-4">Purchase Helix Coins</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {coinPackages.map((pack) => (
-                    <div
-                      key={pack.id}
-                      className={`bg-card rounded-lg overflow-hidden shadow-lg border coin-card ${
-                        pack.popular ? "border-primary animate-pulse-gold" : "border-border"
-                      }`}
-                    >
-                      <div className="p-4 space-y-3">
-                        <div className="flex justify-center">
-                          <div className="relative h-12 w-12">
-                            <Image src="/images/helix_coin.png" alt="Helix Coin" fill className="object-contain" />
-                          </div>
-                        </div>
-
-                        <div className="text-center">
-                          <div className="flex items-center justify-center space-x-1">
-                            <span className="text-xl font-bold text-primary">{pack.coins.toLocaleString()}</span>
-                            <span className="text-muted-foreground">Coins</span>
-                          </div>
-
-                          {pack.bonus > 0 && (
-                            <div className="mt-1 flex items-center justify-center text-xs text-green-500 font-medium">
-                              <span>
-                                +{pack.bonus.toLocaleString()} Bonus ({getBonusPercentage(pack.coins, pack.bonus)}%)
-                              </span>
-                            </div>
-                          )}
-
-                          <div className="mt-2 text-center text-lg font-bold">${pack.dollars.toFixed(2)}</div>
-                        </div>
-
-                        {pack.popular && (
-                          <div className="bg-primary/10 text-primary text-xs font-bold px-2 py-1 rounded text-center">
-                            BEST VALUE
-                          </div>
-                        )}
-
-                        <Button
-                          className="w-full fire-button"
-                          // onClick={() => handlePurchase(pack.id)}
-                          disabled={isPurchasing}
-                        >
-                          {isPurchasing ? (
-                            <div className="flex items-center">
-                              <div className="animate-spin mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"></div>
-                              Processing...
-                            </div>
-                          ) : (
-                            <>
-                              <ShoppingCart className="mr-2 h-4 w-4" />
-                              Purchase
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+           
+                <h3 className="font-light"><em>Low on helix coins? Visit the store and stock up!</em></h3>
               </CardContent>
             </Card>
           </div>
