@@ -12,7 +12,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const userId = "test1"
+    const userId = session.user.email
     const helixCoins = await getUserHelixCoins(userId)
 
     return NextResponse.json({

@@ -29,7 +29,7 @@ export async function getUserByEmail(email: string) {
 }
 
 export async function getUserById(id: string | number) {
-  const users = (await query("SELECT * FROM memberinfo WHERE id = ?", [id])) as any[]
+  const users = (await query("SELECT * FROM memberinfo WHERE uID = ?", [id])) as any[]
   return users.length > 0 ? users[0] : null
 }
 
