@@ -49,7 +49,6 @@ export default function PayPalCheckout({
       });
 
       const orderData = await response.json();
-      console.log("Order data:", orderData);
 
       if (response.ok) {
         return orderData.id;
@@ -58,7 +57,6 @@ export default function PayPalCheckout({
       }
     } catch (err: any) {
       setError(err.message);
-      console.error(err);
       return null; // Return null to prevent PayPal from proceeding
     } finally {
       setIsProcessing(false);
@@ -68,7 +66,6 @@ export default function PayPalCheckout({
   const onApprove = async (data : any) => {
     try {
       setIsProcessing(true);
-      console.log("Order approved:", data);
       const { orderID } = data;
 
       // Call capture endpoint
@@ -81,7 +78,6 @@ export default function PayPalCheckout({
 
       
       const orderData = await response.json();
-      console.log("Capture response:", orderData);
       if (response.ok) {
         // Call onSuccess with both PayPal order data and original package details
         if (onSuccess) {
@@ -95,7 +91,6 @@ export default function PayPalCheckout({
           });
         }
 
-        console.log("Payment successful", orderData);
 
         // Close modal after successful payment
         setTimeout(() => {
@@ -108,14 +103,12 @@ export default function PayPalCheckout({
       }
     } catch (err: any) {
       setError(err.message);
-      console.error(err);
     } finally {
       setIsProcessing(false);
     }
   };
 
   const onError = (err) => {
-    console.error("PayPal error:", err);
     setIsProcessing(false);
   };
 

@@ -17,7 +17,6 @@ export default function StorePage() {
   const { data: session, status } = useSession({
     required: true,
     onUnauthenticated() {
-      console.log("User is not authenticated, redirecting to login page");
       redirect("/login?callbackUrl=/login");
     },
   });
@@ -185,7 +184,6 @@ export default function StorePage() {
   };
 
   const handlePaymentSuccess = async (details: any) => {
-    console.log("Payment completed successfully!", details);
 
     try {
       const response = await fetch("/api/credit-coins", {
@@ -208,7 +206,6 @@ export default function StorePage() {
       // Show success toast
       alert("Coins credited successfully!");
     } catch (error) {
-      console.error("Error processing successful payment:", error);
     }
   };
 
