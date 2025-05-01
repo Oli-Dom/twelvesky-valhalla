@@ -6,7 +6,11 @@ import {
   OrdersController,
   ItemCategory,
   UpcType,
- 
+  PaypalWalletContextShippingPreference,
+  PaypalExperienceLandingPage,
+  PaypalExperienceUserAction,
+  PayeePaymentMethodPreference
+
 } from "@paypal/paypal-server-sdk";
 
 export async function POST(request : Request) {
@@ -39,21 +43,20 @@ export async function POST(request : Request) {
     // Build the order payload for PayPal
     const payload = {
         intent: CheckoutPaymentIntent.Capture,
-        payment_source: {
+        paymentSource: {
           paypal: {
-            experience_context: {
-              payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
-              landing_page: "LOGIN",
-              shipping_preference: "GET_FROM_FILE",
-              user_action: "PAY_NOW",
-              return_url: "https://valhallasky.org/store",
-              cancel_url: "https://valhallasky.org",
+            experienceContext: {
+              paymentMethodPreference: PayeePaymentMethodPreference.ImmediatePaymentRequired ,
+              landingPage: PaypalExperienceLandingPage.Login,
+              shippingPreference: PaypalWalletContextShippingPreference.NoShipping,
+              userAction: PaypalExperienceUserAction.PayNow,
+              returnUrl: "https://valhallasky.org/store",
+              cancelUrl: "https://valhallasky.org",
             },
           },
         },
         purchaseUnits: [
           {
-            invoice_id: `invoice-${Math.floor(Math.random() * 1000000)}`,
             amount: {
               currencyCode: "USD",
               value: items[0].price.toString(),
@@ -71,11 +74,6 @@ export async function POST(request : Request) {
                 unitAmount: { currencyCode: "USD", value:  items[0].price.toString() },
                 quantity: "1",
                 category: ItemCategory.DigitalGoods,
-                sku: items[0]?.sku,
-                image_url:
-                  "https://ibb.co/JRGLtS6F",
-                url: "https://example.com/url-to-the-item-being-purchased-1",
-                upc: { type: UpcType.UpcA, code: "123456789012" },
               }
             ],
           },
