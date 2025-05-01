@@ -23,31 +23,14 @@ export default function ProfilePage() {
   const [helixCoins, setHelixCoins] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
-  const [purchaseStatus, setPurchaseStatus] = useState({ success: false, message: "" })
-  const [isPurchasing, setIsPurchasing] = useState(false)
 
-  // Coin packages
-  const coinPackages = [
-    { id: 1, dollars: 5, coins: 750, bonus: 0, popular: false },
-    { id: 2, dollars: 10, coins: 1500, bonus: 0, popular: false },
-    { id: 3, dollars: 20, coins: 3000, bonus: 0, popular: false },
-    { id: 4, dollars: 50, coins: 7500, bonus: 375, popular: true }, // 5% Bonus
-    { id: 5, dollars: 100, coins: 15000, bonus: 1500, popular: false }, // 10% Bonus
-    { id: 6, dollars: 500, coins: 75000, bonus: 37500, popular: true }, // 50% Bonus
-  ]
-
-  // Calculate bonus percentage for display
-  const getBonusPercentage = (coins: number, bonus: number) => {
-    if (bonus === 0) return null
-    return Math.round((bonus / coins) * 100)
-  }
 
   useEffect(() => {
-    console.log("Profile page loaded, session status:", status)
-    console.log("Session data:", session)
+    // console.log("Profile page loaded, session status:", status)
+    // console.log("Session data:", session)
   
     if (status === "authenticated") {
-      console.log("User is authenticated, fetching coin balance")
+      //console.log("User is authenticated, fetching coin balance")
       fetchCoinBalance()
     }
   }, [status, session])
@@ -55,7 +38,7 @@ export default function ProfilePage() {
   const fetchCoinBalance = async () => {
     try {
       setLoading(true)
-      console.log("Fetching coin balance...")
+      //console.log("Fetching coin balance...")
       const response = await fetch("/api/coins/balance")
 
       if (!response.ok) {
@@ -63,7 +46,7 @@ export default function ProfilePage() {
       }
 
       const data = await response.json()
-      console.log("Coin balance data:", data)
+      //console.log("Coin balance data:", data)
       setHelixCoins(data.helixCoins)
     } catch (err: any) {
       console.error("Error fetching coin balance:", err)
@@ -73,48 +56,7 @@ export default function ProfilePage() {
     }
   }
 
-  const handlePurchase = async (packageId: number) => {
-    try {
-      setIsPurchasing(true)
-      setPurchaseStatus({ success: false, message: "" })
-      console.log("Purchasing coin package:", packageId)
 
-      const response = await fetch("/api/coins/purchase", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ packageId }),
-      })
-
-      const data = await response.json()
-      console.log("Purchase response:", data)
-
-      if (!response.ok) {
-        throw new Error(data.error || "Purchase failed")
-      }
-
-      // Update coin balance
-      setHelixCoins(data.newBalance)
-      setPurchaseStatus({
-        success: true,
-        message: data.message,
-      })
-
-      // Clear success message after 5 seconds
-      setTimeout(() => {
-        setPurchaseStatus({ success: false, message: "" })
-      }, 5000)
-    } catch (err: any) {
-      console.error("Purchase error:", err)
-      setPurchaseStatus({
-        success: false,
-        message: err.message || "An error occurred during purchase",
-      })
-    } finally {
-      setIsPurchasing(false)
-    }
-  }
 
   if (status === "loading" || loading) {
     return (
@@ -148,15 +90,7 @@ export default function ProfilePage() {
             </Alert>
           )}
 
-          {purchaseStatus.message && (
-            <Alert
-              className={`mb-6 ${purchaseStatus.success ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-destructive/10 text-destructive border-destructive/20"}`}
-            >
-              {purchaseStatus.success ? <CheckCircle className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
-              <AlertDescription>{purchaseStatus.message}</AlertDescription>
-            </Alert>
-          )}
-
+    
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card className="md:col-span-4">
               <CardHeader>

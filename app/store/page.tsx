@@ -11,7 +11,6 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PayPalCheckout from "@/components/PaypalCheckout";
-import { toast } from "@/components/ui/use-toast"; // Add toast if you have it
 import { Package } from "@/types/package";
 
 export default function StorePage() {
@@ -201,22 +200,15 @@ export default function StorePage() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to credit coins to account");
         alert("Failed to credit coins to account");
+        throw new Error("Failed to credit coins to account");
+     
       }
 
       // Show success toast
       alert("Coins credited successfully!");
     } catch (error) {
       console.error("Error processing successful payment:", error);
-      if (typeof toast === "function") {
-        toast({
-          title: "Payment Error",
-          description:
-            "Your payment was successful, but we couldn't credit your account. Our team has been notified.",
-          variant: "destructive",
-        });
-      }
     }
   };
 

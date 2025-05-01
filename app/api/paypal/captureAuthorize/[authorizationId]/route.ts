@@ -4,7 +4,7 @@ import { PaymentsController } from "@paypal/paypal-server-sdk";
 
 export async function POST(request : Request, { params }) {
   try {
-    const { authorizationId } = params;
+    const { authorizationId } = await params;
     const client = getPayPalClient();
     const paymentsController = new PaymentsController(client);
     

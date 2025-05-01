@@ -1,5 +1,4 @@
-
-
+console.log("Logging from api/order/route.ts")
 import { NextResponse } from "next/server";
 import { getPayPalClient } from "@/lib/paypal";
 import {
@@ -89,6 +88,7 @@ export async function POST(request : Request) {
     });
 
     if (order.statusCode === 201 || order.statusCode === 200) {
+      console.log(order)
       // Return just the order ID and status to the client
       return NextResponse.json(
         {

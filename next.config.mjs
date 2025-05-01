@@ -18,13 +18,13 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: `
               default-src 'self';
-              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypal.com https://www.sandbox.paypal.com;
+              script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com;
               style-src 'self' 'unsafe-inline';
               img-src 'self' https: data:;
               connect-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com;
               font-src 'self';
               object-src 'none';
-              frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com;
+              frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://www.paypalobjects.com;
               frame-ancestors 'self';
             `
               .replace(/\s{2,}/g, " ")

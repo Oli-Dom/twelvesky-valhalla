@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Package } from "@/types/package";
 
 export default function PayPalCheckout({
   isOpen,
@@ -50,6 +49,7 @@ export default function PayPalCheckout({
       });
 
       const orderData = await response.json();
+      console.log("Order data:", orderData);
 
       if (response.ok) {
         return orderData.id;
@@ -68,6 +68,7 @@ export default function PayPalCheckout({
   const onApprove = async (data : any) => {
     try {
       setIsProcessing(true);
+      console.log("Order approved:", data);
       const { orderID } = data;
 
       // Call capture endpoint
@@ -78,8 +79,9 @@ export default function PayPalCheckout({
         },
       });
 
+      
       const orderData = await response.json();
-
+      console.log("Capture response:", orderData);
       if (response.ok) {
         // Call onSuccess with both PayPal order data and original package details
         if (onSuccess) {
@@ -88,7 +90,7 @@ export default function PayPalCheckout({
             packageName: name,
             coins: coins,
             price: price,
-            orderId: orderID,
+            orderId: id,
             paypalDetails: orderData,
           });
         }

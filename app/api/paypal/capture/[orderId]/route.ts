@@ -1,4 +1,4 @@
-
+console.log("logging from api/caputure/orderID")
 import { NextResponse } from 'next/server';
 import { getPayPalClient } from '@/lib/paypal';
 import { OrdersController } from '@paypal/paypal-server-sdk';
