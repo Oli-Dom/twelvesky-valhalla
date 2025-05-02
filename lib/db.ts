@@ -58,14 +58,14 @@ export async function createUser(username: string, email: string, password: stri
 
 // Get user's helix coins
 export async function getUserHelixCoins(userId: string | number) {
-  const result = (await query("SELECT uCash FROM memberinfo WHERE uID = ?", [userId])) as any[]
+  const result = (await query("SELECT uCash FROM memberinfo WHERE uEmail = ?", [userId])) as any[]
 
   if (result.length > 0) {
     return result[0].uCash
   }
 
   // If no record exists, create one with 0 coins
-  await query("INSERT INTO memberinfo (uID, uCash) VALUES (?, 0)", [userId])
+  await query("INSERT INTO memberinfo (uEmail, uCash) VALUES (?, 0)", [userId])
   return 0
 }
 
