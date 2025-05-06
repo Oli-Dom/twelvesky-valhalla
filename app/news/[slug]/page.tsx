@@ -3,11 +3,19 @@ import { newsData } from "@/consts/newsData";
 import Image from "next/image";
 import { MainNav } from "@/components/main-nav";
 import { Footer } from "@/components/footer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'News',
+};
+
 export default async function NewsArticlePage({
   params,
 }: {
   params: { slug: string };
 }) {
+
+
   const resolvedParams = await params; // Await the params object
   const slug = resolvedParams.slug;
   const article = newsData.find((article) => article.slug === slug);
