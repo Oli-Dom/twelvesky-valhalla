@@ -35,15 +35,15 @@ Whether you're new to TwelveSky or a long-time veteran, this site makes supporti
 To run this project locally:
 
     Clone the repository
+    git clone https://github.com/Oli-Dom/twelvesky-valhalla
+    cd twelvesky-valhalla
 
-git clone https://github.com/Oli-Dom/twelvesky-valhalla
-cd twelvesky-valhalla
 
 Install dependencies
 
-pnpm | npm install
-# or
-yarn install
+    pnpm | npm install
+    # or
+    yarn install
 
 Set up environment variables
 Create a .env.local file in the root directory with the necessary environment variables (e.g., database URL, authentication secrets).
