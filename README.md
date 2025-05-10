@@ -1,4 +1,4 @@
-TwelveSky Valhalla Web Store
+**TwelveSky Valhalla Website**
 
 A web application built with Next.js, React, and TypeScript that allows users to create accounts and purchase in-game currency for the MMO game TwelveSky Valhalla. This platform provides a seamless and secure experience for players to support the game and access premium in-game benefits.
 🚀 Project Overview
