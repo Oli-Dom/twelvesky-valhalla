@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import { DownloadButton } from "./ui/downloadButton";
 
 export function Hero(){
     return(
@@ -19,10 +20,7 @@ export function Hero(){
             legendary foes and claim your place among the gods.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="fire-button animate-pulse-gold">
-              <Download className="mr-2 h-5 w-5" />
-              Download Now
-            </Button>
+          <DownloadButton/>
             <Link href="/login">
               <Button variant="outline" size="lg" className="fire-button">
                 Play Now

@@ -6,7 +6,7 @@ import { MainNav } from "@/components/main-nav";
 import { Footer } from "@/components/footer";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import Loading from "@/app/store/loading"
+import Loading from "@/components/loading/loading"
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -166,7 +166,7 @@ export default function StorePage() {
 
   // PayPal initialization options
   const paypalInitOptions = {
-    "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID ,
+    clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!,
     currency: "USD",
     intent: "capture",
   };

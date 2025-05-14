@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer"
 import { CalendarDays, FileText } from "lucide-react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useEffect, useState } from "react"
-import Loading from "@/app/news/loading"
+import Loading from "@/components/loading/loading"
 
 
 

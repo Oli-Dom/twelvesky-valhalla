@@ -7,7 +7,7 @@ import { Footer } from "@/components/footer"
 import { useEffect } from "react"
 import { useState } from "react"
 import { CalendarDays, ChevronRight } from "lucide-react"
-import Loading from "@/app/news/loading"
+import Loading from "@/components/loading/loading"
 import { newsData } from "@/consts/newsData"
 
 export default function NewsPage() {
