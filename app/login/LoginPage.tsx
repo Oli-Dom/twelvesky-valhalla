@@ -164,7 +164,7 @@ export default function LoginPage({
               <Alert className="bg-green-500/10 text-green-500 border-green-500/20">
                 <CheckCircle2 className="h-4 w-4" />
                 <AlertDescription>
-                  Account created successfully! You can now log in.
+                  Account created successfully! Verify Email
                 </AlertDescription>
               </Alert>
             )}
