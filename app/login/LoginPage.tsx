@@ -1,103 +1,130 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { signIn, useSession } from "next-auth/react"
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
-import { MainNav } from "@/components/main-nav"
-import { Footer } from "@/components/footer"
-import { useSearchParams, useRouter } from "next/navigation"
-import { AtSign, Lock, Eye, EyeOff, CheckCircle2, AlertCircle } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { useState, useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { MainNav } from "@/components/main-nav";
+import { Footer } from "@/components/footer";
+import { useSearchParams, useRouter } from "next/navigation";
+import {
+  AtSign,
+  Lock,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
-export default function LoginPage({ registered, error, callbackUrl }: { registered: string | null, error: string | null, callbackUrl: string | "/profile" }) {
-  const router = useRouter()
-  const { data: session, status } = useSession()
- 
+export default function LoginPage({
+  registered,
+  error,
+  callbackUrl,
+}: {
+  registered: string | null;
+  error: string | null;
+  callbackUrl: string | "/profile";
+}) {
+  const router = useRouter();
+  const { data: session, status } = useSession();
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [loginError, setLoginError] = useState("")
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginError, setLoginError] = useState("");
 
   // Redirect if already logged in
   useEffect(() => {
     if (status === "authenticated") {
-      console.log("User is authenticated, redirecting to profile page")
-      router.push("/profile")
+      console.log("User is authenticated, redirecting to profile page");
+      router.push("/profile");
     }
-  }, [status, router])
+  }, [status, router]);
 
   useEffect(() => {
     if (registered === "true") {
-      setShowSuccessMessage(true)
+      setShowSuccessMessage(true);
       const timer = setTimeout(() => {
-        setShowSuccessMessage(false)
-      }, 5000)
+        setShowSuccessMessage(false);
+      }, 5000);
 
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
 
     if (error) {
-      setLoginError("Invalid email or password")
+      setLoginError("Invalid email or password");
     }
-  }, [registered, error])
+  }, [registered, error]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
+    }));
 
     // Clear error when user starts typing
     if (loginError) {
-      setLoginError("")
+      setLoginError("");
     }
-  }
+  };
 
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setLoginError("")
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setLoginError("");
 
     try {
-      console.log("Attempting to sign in with:", { email: formData.email, password: "***" })
-      console.log("Callback URL:", callbackUrl)
+      console.log("Attempting to sign in with:", {
+        email: formData.email,
+        password: "***",
+      });
+      console.log("Callback URL:", callbackUrl);
 
       const result = await signIn("credentials", {
         redirect: false,
         email: formData.email,
         password: formData.password,
-      })
+      });
 
-      console.log("Sign in result:", result)
+      console.log("Sign in result:", result);
 
       if (result?.error) {
-        setLoginError("Invalid email or password")
-        setIsSubmitting(false)
-        return
+        if (result.error === "AccountNotVerified") {
+          setLoginError(
+            "Your account has not been verified yet. Please check your email."
+          );
+        } else {
+          setLoginError("Invalid email or password");
+        }
+        setIsSubmitting(false);
+        return;
       }
 
       if (result?.ok) {
-        console.log("Login successful, redirecting to:", callbackUrl)
+        console.log("Login successful, redirecting to:", callbackUrl);
         // Force a hard redirect to ensure the page is fully reloaded
-        window.location.href = callbackUrl
+        window.location.href = callbackUrl;
       }
     } catch (error) {
-      console.error("Login error:", error)
-      setLoginError("An error occurred during login")
-      setIsSubmitting(false)
+      console.error("Login error:", error);
+      setLoginError("An error occurred during login");
+      setIsSubmitting(false);
     }
-  }
+  };
 
   // If already logged in, don't show the login form
   if (status === "authenticated") {
@@ -106,14 +133,16 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
         <MainNav />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">You are already logged in</h1>
+            <h1 className="text-2xl font-bold mb-4">
+              You are already logged in
+            </h1>
             <p className="mb-4">Redirecting to your profile page...</p>
             <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto"></div>
           </div>
         </main>
         <Footer />
       </div>
-    )
+    );
   }
 
   return (
@@ -123,13 +152,20 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
         <div className="container grid md:grid-cols-2 gap-6 px-4 md:px-6">
           <div className="relative hidden md:block">
             <div className="absolute inset-0 bg-gradient-to-r from-background to-transparent z-10" />
-            <Image src="/images/banner6.png" alt="Login Background" fill className="object-cover" />
+            <Image
+              src="/images/banner6.png"
+              alt="Login Background"
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="space-y-6">
             {showSuccessMessage && (
               <Alert className="bg-green-500/10 text-green-500 border-green-500/20">
                 <CheckCircle2 className="h-4 w-4" />
-                <AlertDescription>Account created successfully! You can now log in.</AlertDescription>
+                <AlertDescription>
+                  Account created successfully! You can now log in.
+                </AlertDescription>
               </Alert>
             )}
 
@@ -141,8 +177,12 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
             )}
 
             <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-bold text-primary">Login to Your Account</h1>
-              <p className="text-muted-foreground">Enter your credentials to access your Twelsky Valhalla account</p>
+              <h1 className="text-3xl font-bold text-primary">
+                Login to Your Account
+              </h1>
+              <p className="text-muted-foreground">
+                Enter your credentials to access your Twelsky Valhalla account
+              </p>
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -166,7 +206,10 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <Label htmlFor="password">Password</Label>
-                  <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+                  <Link
+                    href="/forgot-password"
+                    className="text-sm text-primary hover:underline"
+                  >
                     Forgot password?
                   </Link>
                 </div>
@@ -202,7 +245,11 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
                   Remember me
                 </Label>
               </div>
-              <Button type="submit" className="w-full fire-button" disabled={isSubmitting}>
+              <Button
+                type="submit"
+                className="w-full fire-button"
+                disabled={isSubmitting}
+              >
                 {isSubmitting ? (
                   <div className="flex items-center">
                     <div className="animate-spin mr-2 h-4 w-4 border-2 border-current border-t-transparent rounded-full"></div>
@@ -226,5 +273,5 @@ export default function LoginPage({ registered, error, callbackUrl }: { register
       </main>
       <Footer />
     </div>
-  )
+  );
 }

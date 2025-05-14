@@ -1,6 +1,6 @@
-import NextAuth from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { getUserByEmail } from "@/lib/db"
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { getUserByEmail } from "@/lib/db";
 
 export const authOptions = {
   providers: [
@@ -12,35 +12,37 @@ export const authOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null
+          return null;
         }
 
         // Find user by email using direct MySQL query
-        const user = await getUserByEmail(credentials.email)
- 
-        
+        const user = await getUserByEmail(credentials.email);
+
         if (!user) {
-          console.log("User not found")
-          return null
+          console.log("User not found");
+          return null;
+        }
+
+        if (user.isVerified === 0) {
+          throw new Error("AccountNotVerified")
+          
         }
 
         // Direct password comparison (no hashing)
-        const passwordMatch = user.uPassword === credentials.password
-      
+        const passwordMatch = user.uPassword === credentials.password;
 
         if (!passwordMatch) {
-          console.log("Password does not match")
-          return null
+          console.log("Password does not match");
+          return null;
         }
 
         // Return user data in the format NextAuth expects
-     
 
         return {
           id: user.uUserIdx.toString(),
           email: user.uEmail,
           name: user.uID,
-        }
+        };
       },
     }),
   ],
@@ -56,21 +58,21 @@ export const authOptions = {
   callbacks: {
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id
-        session.user.name = token.name
-        session.user.email = token.email
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
       }
-      return session
+      return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
+        token.id = user.id;
       }
-      return token
+      return token;
     },
   },
-}
+};
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };

@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise"
+import { NextResponse } from "next/server"
 
 // Create a connection pool
 const pool = mysql.createPool({
@@ -38,11 +39,12 @@ export async function getUserByUsername(username: string) {
   return users.length > 0 ? users[0] : null
 }
 
-export async function createUser(username: string, email: string, password: string) {
-  const result = (await query("INSERT INTO memberinfo (uID, uEmail, uPassword) VALUES (?, ?, ?)", [
+export async function createUser(username: string, email: string, password: string, isVerified:number) {
+  const result = (await query("INSERT INTO memberinfo (uID, uEmail, uPassword, isVerified) VALUES (?, ?, ?,?)", [
     username,
     email,
     password,
+    isVerified
   ])) as any
 
   if (result.insertId) {
@@ -50,6 +52,7 @@ export async function createUser(username: string, email: string, password: stri
       id: result.insertId,
       uID: username,
       uEmail: email,
+      isVerified: isVerified
     }
   }
 
@@ -83,4 +86,30 @@ export async function updateUserHelixCoins(uEmail: string | number, amount: numb
   // Return updated amount
   const updated = (await query("SELECT uCash FROM memberinfo WHERE uEmail = ?", [uEmail])) as any[]
   return updated[0].helixCoins
+}
+
+export async function storeVerificationToken(uEmail:string, token:string){
+    const existing = (await query("SELECT uID FROM memberinfo WHERE uEmail = ?", [uEmail])) as any[]
+ if (existing.length > 0) {
+    await query("UPDATE memberinfo SET verificationToken = ? WHERE uEmail = ?", [token, uEmail])
+  } else {
+    return NextResponse.json({ error: 'No account to bind token to' }, { status: 500 })
+  }
+}
+
+export async function getVerificationStatus(token: string) {
+  const existing = (await query("SELECT * FROM memberinfo WHERE verificationToken = ?", [token])) as any[]
+
+  if (existing.length > 0) {
+    return {
+      uEmail: existing[0].uEmail,
+      status: existing[0].isVerified,
+    }
+  } else {
+    return null
+  }
+}
+
+export async function markEmailAsVerified(uEmail: string) {
+  await query("UPDATE memberinfo SET isVerified = 1 WHERE uEmail = ?", [uEmail])
 }
