@@ -63,50 +63,58 @@ export default function PayPalCheckout({
     }
   };
 
-  const onApprove = async (data : any) => {
-    try {
-      setIsProcessing(true);
-      const { orderID } = data;
+  const onApprove = async (data) => {
+  try {
+    setIsProcessing(true);
+    const { orderID } = data;
 
-      // Call capture endpoint
-      const response = await fetch(`/api/paypal/capture/${orderID}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    // Call capture endpoint
+    const response = await fetch(`/api/paypal/capture/${orderID}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-      
-      const orderData = await response.json();
-      if (response.ok) {
-        // Call onSuccess with both PayPal order data and original package details
-        if (onSuccess) {
-          onSuccess({
-            packageId: id,
-            packageName: name,
-            coins: coins,
-            price: price,
-            orderId: id,
-            paypalDetails: orderData,
-          });
-        }
-
-
-        // Close modal after successful payment
-        setTimeout(() => {
-          onClose();
-        }, 1000);
-
-        return orderData;
-      } else {
-        throw new Error(orderData.error || "Payment could not be captured");
+    const orderData = await response.json();
+    
+    if (response.ok) {
+      // Handle successful capture as before
+      if (onSuccess) {
+        onSuccess({
+          packageId: id,
+          packageName: name,
+          coins: coins,
+          price: price,
+          orderId: orderID,
+          paypalDetails: orderData,
+        });
       }
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsProcessing(false);
+
+      // Close modal after successful payment
+      setTimeout(() => {
+        onClose();
+      }, 1000);
+
+      return orderData;
+    } else {
+      // Handle specific error cases
+      if (orderData.status === 'PAYER_ACTION_REQUIRED' && orderData.approvalUrl) {
+        // If order needs additional approval, offer to redirect
+        setError("Payment requires additional approval. Please complete the payment process.");
+        
+        // Optional: You could redirect to the approval URL here
+        // window.location.href = orderData.approvalUrl;
+      } else {
+        throw new Error(orderData.message || orderData.error || "Payment could not be captured");
+      }
     }
-  };
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setIsProcessing(false);
+  }
+};
 
   const onError = (err) => {
     setIsProcessing(false);
