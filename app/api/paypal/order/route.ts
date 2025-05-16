@@ -82,7 +82,7 @@ export async function POST(request : Request) {
     // Execute the request
     const order = await orderRequest.createOrder({
       body: payload,
-      prefer: "return=minimal",
+      prefer: "return=representation",
     });
 
     if (order.statusCode === 201 || order.statusCode === 200) {
