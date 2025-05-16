@@ -178,7 +178,7 @@ export async function POST(
   request: Request,
   { params }: { params: { orderId: string } }
 ) {
-  const { orderId } = params;
+  const { orderId } = await params;
   console.log("Received orderId in capture endpoint:", orderId);
 
   try {
