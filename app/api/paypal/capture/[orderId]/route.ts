@@ -88,14 +88,12 @@ export async function POST(
     // Handle different order states
     if (orderDetails.result.status === "PAYER_ACTION_REQUIRED") {
       console.log("Order requires additional payer action");
-      
 
       return NextResponse.json(
         {
           error: "Payment approval incomplete",
           status: "PAYER_ACTION_REQUIRED",
           message: "The payment requires additional approval from the customer",
-        
         },
         { status: 400 }
       );
@@ -120,7 +118,9 @@ export async function POST(
 
     try {
       // Pass orderId as a string, not an object
-      const captureResponse = await ordersController.captureOrder({ id: orderId });
+      const captureResponse = await ordersController.captureOrder({
+        id: orderId,
+      });
       console.log("Capture successful:", captureResponse.statusCode);
 
       return NextResponse.json(
@@ -128,14 +128,13 @@ export async function POST(
           id: captureResponse.result.id,
           status: captureResponse.result.status,
           payer: captureResponse.result.payer,
-          purchaseUnits:
-            captureResponse.result.purchase_units ||
-            captureResponse.result.purchaseUnits,
+          purchaseUnits: captureResponse.result.purchaseUnits,
+          approvalUrl: captureResponse.result.links,
         },
         { status: 200 }
       );
     } catch (captureError) {
-      console.error("Capture error:", captureError);
+      console.error("Capture error:", captureError.body);
 
       const errorDetails = {
         error: "Failed to capture payment",
