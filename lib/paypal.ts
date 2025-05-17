@@ -18,7 +18,7 @@ import {
         oAuthClientSecret: clientSecret,
       },
       timeout: 0,
-      environment: Environment.Production,
+      environment: Environment.Sandbox,
       logging: {
         logLevel: LogLevel.Info,
         logRequest: { logBody: true },

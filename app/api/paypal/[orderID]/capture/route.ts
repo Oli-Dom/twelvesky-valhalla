@@ -176,16 +176,24 @@ import { OrdersController } from "@paypal/paypal-server-sdk";
 
 export async function POST(
   request: Request,
-  { params }: { params: { orderId: string } }
+  { params }: { params: { orderID: string } }
 ) {
-  const { orderId } = await params;
-  console.log("Received orderId in capture endpoint:", orderId);
+  const { orderID } = await params;
+  console.log("Received orderId in capture endpoint:", orderID);
 
   try {
     const client = getPayPalClient();
     const orders = new OrdersController(client);
 
-    const captureRequest = await orders.captureOrder({id:orderId});
+    const orderDetails = await  orders.getOrder({id:orderID})
+        if (orderDetails.result.status === "COMPLETED") {
+      return NextResponse.json({
+        message: "Order already captured",
+        paypalDetails: orderDetails.result,
+      }, { status: 200 });
+    }
+
+    const captureRequest = await orders.captureOrder({id:orderID});
     const response = await captureRequest;
 
     console.log("PayPal Capture API Response:", response);

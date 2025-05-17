@@ -70,7 +70,7 @@ export default function PayPalCheckout({
       const { orderID:orderId } =  data;
       console.log(orderId);
       // Call capture endpoint
-      const response = await fetch(`/api/paypal/capture/${orderId}`, {
+      const response = await fetch(`/api/paypal/${orderId}/capture`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
