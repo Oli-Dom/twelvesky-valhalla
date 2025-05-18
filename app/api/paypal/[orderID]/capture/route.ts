@@ -169,7 +169,6 @@
 //   }
 // }
 
-
 import { NextResponse } from "next/server";
 import { getPayPalClient } from "@/lib/paypal";
 import { OrdersController } from "@paypal/paypal-server-sdk";
@@ -185,16 +184,22 @@ export async function POST(
     const client = getPayPalClient();
     const orders = new OrdersController(client);
 
-    const orderDetails = await  orders.getOrder({id:orderID})
-        if (orderDetails.result.status === "COMPLETED") {
-      return NextResponse.json({
-        message: "Order already captured",
-        paypalDetails: orderDetails.result,
-      }, { status: 200 });
+    const orderDetails = await orders.getOrder({ id: orderID });
+    if (orderDetails.result.status === "COMPLETED") {
+      return NextResponse.json(
+        {
+          message: "Order already captured",
+          paypalDetails: orderDetails.result,
+        },
+        { status: 200 }
+      );
     }
 
-    const captureRequest = await orders.captureOrder({id:orderID});
-    const response = await captureRequest;
+    const captureResponse = await orders.captureOrder({
+      id: orderID,
+      body:{}
+    });
+    const response = await captureResponse;
 
     console.log("PayPal Capture API Response:", response);
 
@@ -209,6 +214,9 @@ export async function POST(
     }
   } catch (error: any) {
     console.error("Error capturing order:", error);
-    return NextResponse.json({ error: "Failed to capture order.", details: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to capture order.", details: error.message },
+      { status: 500 }
+    );
   }
 }
