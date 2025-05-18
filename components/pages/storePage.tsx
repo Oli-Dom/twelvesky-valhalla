@@ -202,7 +202,7 @@ export default function StorePage() {
       if (!response.ok) {
         alert("Failed to credit coins to account");
         throw new Error("Failed to credit coins to account");
-     
+
       }
 
       // Show success toast
@@ -234,11 +234,10 @@ export default function StorePage() {
                 {coinPackages.map((pack) => (
                   <div
                     key={pack.id}
-                    className={`bg-card rounded-lg overflow-hidden shadow-lg border coin-card ${
-                      pack.popular
+                    className={`bg-card rounded-lg overflow-hidden shadow-lg border coin-card ${pack.popular
                         ? "border-primary animate-pulse-gold"
                         : "border-border"
-                    }`}
+                      }`}
                   >
                     <div className="p-6 space-y-4">
                       <div className="flex justify-center">
@@ -280,13 +279,13 @@ export default function StorePage() {
                         </div>
                       )}
 
-                      {/* <Button
+                      <Button
                         className="w-full fire-button"
                         onClick={() => handlePurchaseClick(pack)}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         Purchase Now
-                      </Button> */}
+                      </Button>
                       <p>Make a ticket in server to purchase</p>
                     </div>
                   </div>
@@ -304,7 +303,7 @@ export default function StorePage() {
           packageDetails={{
             id: selectedPackage?.id,
             name: selectedPackage?.name,
-            coins: selectedPackage?.coins + selectedPackage?.bonus || 0,
+            coins: (selectedPackage?.coins ?? 0) + (selectedPackage?.bonus ?? 0),
             price: selectedPackage?.dollars,
             bonus: selectedPackage?.bonus,
             popular: selectedPackage?.popular,

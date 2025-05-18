@@ -15,6 +15,11 @@ export default function PayPalCheckout({
   onClose,
   packageDetails,
   onSuccess,
+}: {
+  isOpen: any;
+  onClose: any;
+  packageDetails: any;
+  onSuccess: any;
 }) {
   const [error, setError] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -63,11 +68,11 @@ export default function PayPalCheckout({
     }
   };
 
-  const onApprove = async (data) => {
+  const onApprove = async (data: any) => {
     console.log("Data received in onApprove:", data);
     try {
       setIsProcessing(true);
-      const { orderID:orderId } =  data;
+      const { orderID: orderId } = data;
       console.log(orderId);
       // Call capture endpoint
       const response = await fetch(`/api/paypal/${orderId}/capture`, {
@@ -117,14 +122,15 @@ export default function PayPalCheckout({
           );
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setIsProcessing(false);
     }
   };
 
-  const onError = (err) => {
+  const onError = (err: any) => {
+    console.log(err);
     setIsProcessing(false);
   };
 
@@ -167,10 +173,56 @@ export default function PayPalCheckout({
                 label: "pay",
               }}
               createOrder={createOrder}
-              onApprove={onApprove}
+              onApprove={async (data, actions) => {
+                await actions.order!.capture();
+
+                const orderId = data.orderID;
+
+                const response = await fetch(`/api/paypal/${orderId}/capture`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+
+                const orderData = await response.json();
+
+                if (response.ok) {
+                  if (onSuccess) {
+                    onSuccess({
+                      packageId: id,
+                      packageName: name,
+                      coins: coins,
+                      price: price,
+                      orderId: orderId,
+                      paypalDetails: orderData,
+                      approvalUrl: orderData.approvalUrl,
+                    });
+                  }
+
+                  setTimeout(() => {
+                    onClose();
+                  }, 1000);
+
+                  return orderData;
+                } else {
+                  if (
+                    orderData.status === "PAYER_ACTION_REQUIRED" &&
+                    orderData.approvalUrl
+                  ) {
+                    window.location.href = orderData.approvalUrl;
+                  } else {
+                    throw new Error(
+                      orderData.message ||
+                        orderData.error ||
+                        "Payment could not be captured"
+                    );
+                  }
+                }
+              }}
               onError={onError}
               disabled={isProcessing}
-              forceReRender={[price, id]} // Re-render when these values change
+              forceReRender={[price, id]}
             />
           </div>
 
