@@ -174,7 +174,7 @@ export default function PayPalCheckout({
               }}
               createOrder={createOrder}
               onApprove={async (data, actions) => {
-                await actions.order!.capture();
+                await actions.order.capture();
 
                 const orderId = data.orderID;
 
