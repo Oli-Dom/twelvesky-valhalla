@@ -279,13 +279,13 @@ export default function StorePage() {
                         </div>
                       )}
 
-                      <Button
+                      {/* <Button
                         className="w-full fire-button"
                         onClick={() => handlePurchaseClick(pack)}
                       >
                         <ShoppingCart className="mr-2 h-4 w-4" />
                         Purchase Now
-                      </Button>
+                      </Button> */}
                       <p>Make a ticket in server to purchase</p>
                     </div>
                   </div>
