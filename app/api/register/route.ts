@@ -78,7 +78,7 @@ async function sendVerificationEmail(email: string, token: string) {
     service: 'gmail',
     auth: {
       user: 'valhallaskydev@gmail.com',
-      pass: 'olej fzss yvrl vtng',
+      pass: process.env.GMAIL_APP_PASSWORD,
     },
   })
 
