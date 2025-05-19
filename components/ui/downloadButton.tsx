@@ -5,7 +5,7 @@ import { Download } from "lucide-react";
 export function DownloadButton() {
   return (
     <Link
-      href="https://drive.google.com/uc?export=download&id=1i64c4x2GHW6F38KLIDGLDALUV_wyxDeU"
+      href="https://drive.google.com/file/d/1w24X2PPmv4yit8LgdJF7KXUsxcFwYipp/view?usp=sharing"
       target="_blank"
       rel="noopener noreferrer"
     >
